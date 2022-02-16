@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/jpg" href="favicon.ico" />
+    <title>A Challenge!</title>
+    <link rel="stylesheet" href="./src/styles.css" media="screen">
+</head>
+
+<body>
+    <script src="./src/scripts.js"></script>
+
+    <div class="split top">
+        GUESSLE
+        <div class="row row-a fade fade1">
+            Panels here
+        </div>
+    </div>
+    <div class="split bottom">
+        <div class="row row-b button-group fade fade2">
+            <div class="button-row">
+                <button class="button neutral" onclick="letterPress(this.id)" id="Q">Q</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="W">W</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="E">E</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="R">R</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="T">T</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="Y">Y</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="U">U</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="I">I</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="O">O</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="P">P</button>
+            </div>
+            <div class="button-row">
+                <button class="button neutral" onclick="letterPress(this.id)" id="A">A</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="S">S</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="D">D</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="F">F</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="G">G</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="H">H</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="J">J</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="K">K</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="L">L</button>
+            </div>
+            <div class="button-row">
+                <button class="button neutral" onclick="guess()">✔</button>
+
+                <button class="button neutral" onclick="letterPress(this.id)" id="Z">Z</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="X">X</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="C">C</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="V">V</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="B">B</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="N">N</button>
+                <button class="button neutral" onclick="letterPress(this.id)" id="M">M</button>
+
+                <button class="button neutral" onclick="back()">⌫</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

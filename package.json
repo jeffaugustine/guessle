@@ -1,0 +1,24 @@
+{
+  "name": "guessle",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server --proxy http://localhost:8080",
+    "serve": "browser-sync start -s -f . --no-notify --host 0.0.0.0 --port 9000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffaugustine/guessle.git"
+  },
+  "author": "Jeff Augustine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeffaugustine/guessle/issues"
+  },
+  "homepage": "https://github.com/jeffaugustine/guessle#readme",
+  "devDependencies": {
+    "browser-sync": "^2.27.7",
+    "http-server": "^14.1.0"
+  }
+}
