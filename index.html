@@ -8,16 +8,14 @@
 </head>
 
 <body>
-    <script src="./src/scripts.js"></script>
+    <script src="./src/scripts.js" defer></script>
 
     <div class="split top">
-        GUESSLE
-        <div class="row row-a fade fade1">
-            Panels here
-        </div>
+        <div class="title"><span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span><span class="matched">D</span><span class="matched">L</span><span class="matched">E</span></div>
+        <div class="fade fade1" id="grid"></div>
     </div>
     <div class="split bottom">
-        <div class="row row-b button-group fade fade2">
+        <div class="row button-group fade fade2">
             <div class="button-row">
                 <button class="button neutral" onclick="letterPress(this.id)" id="Q">Q</button>
                 <button class="button neutral" onclick="letterPress(this.id)" id="W">W</button>
