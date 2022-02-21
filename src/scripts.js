@@ -1,4 +1,4 @@
-const words = ['aa', 'ab', 'ad', 'ae', 'ag', 'ah', 'ai', 'al', 'am', 'an', 'ar', 'as', 'at', 'aw', 'ax', 'ay', 'ba', 'be', 'bi', 'bo', 'by', 'da', 'de', 'do', 'ed', 'ef', 'eh', 'el', 'em', 'en', 'er', 'es', 'et', 'ex', 'fa', 'fe', 'gi', 'go', 'ha', 'he', 'hi', 'hm', 'ho', 'id', 'if', 'in', 'is', 'it', 'jo', 'ka', 'ki', 'la', 'li', 'lo', 'ma', 'me', 'mi', 'mm', 'mo', 'mu', 'my', 'na', 'ne', 'no', 'nu', 'od', 'oe', 'of', 'oh', 'oi', 'ok', 'om', 'on', 'op', 'or', 'os', 'ow', 'ox', 'oy', 'pa', 'pe', 'pi', 'po', 'qi', 're', 'sh', 'si', 'so', 'ta', 'te', 'ti', 'to', 'uh', 'um', 'un', 'up', 'us', 'ut', 'we', 'wo', 'xi', 'xu', 'ya', 'ye', 'yo', 'za'];
+const words = ['qw'];// ['aa', 'ab', 'ad', 'ae', 'ag', 'ah', 'ai', 'al', 'am', 'an', 'ar', 'as', 'at', 'aw', 'ax', 'ay', 'ba', 'be', 'bi', 'bo', 'by', 'da', 'de', 'do', 'ed', 'ef', 'eh', 'el', 'em', 'en', 'er', 'es', 'et', 'ex', 'fa', 'fe', 'gi', 'go', 'ha', 'he', 'hi', 'hm', 'ho', 'id', 'if', 'in', 'is', 'it', 'jo', 'ka', 'ki', 'la', 'li', 'lo', 'ma', 'me', 'mi', 'mm', 'mo', 'mu', 'my', 'na', 'ne', 'no', 'nu', 'od', 'oe', 'of', 'oh', 'oi', 'ok', 'om', 'on', 'op', 'or', 'os', 'ow', 'ox', 'oy', 'pa', 'pe', 'pi', 'po', 'qi', 're', 'sh', 'si', 'so', 'ta', 'te', 'ti', 'to', 'uh', 'um', 'un', 'up', 'us', 'ut', 'we', 'wo', 'xi', 'xu', 'ya', 'ye', 'yo', 'za'];
 
 var word;
 var guessCount;
@@ -17,6 +17,7 @@ function onInit() {
 
   grid = document.getElementById('grid');
   createGrid(word.length, rowCount);
+  document.addEventListener('keydown', keyPress);
 
   console.log(`Wow there's ${words.length} words in this set!`);
   console.log(`Don't tell anyone but the word is ${word}`);
@@ -59,6 +60,21 @@ function paintNext(add = true) {
   }
 }
 
+// Basic keyboard support
+function keyPress(value) {
+  var key = value.key.toUpperCase();
+  if (key == 'ENTER') {
+    guess();
+  } else if (key == 'BACKSPACE') {
+    back();
+  } else if (key.match(/[A-Z]/i)) {
+    letterPress(key);
+  } else {
+    console.debug(value);
+  }
+}
+
+// Buttons on page
 function letterPress(value) {
   if (currentGuess.length < word.length) {
     currentGuess.push(value);
@@ -101,7 +117,7 @@ function guess() {
       }
     }
 
-     // Find containing letter matches
+    // Find containing letter matches
     for (var i = 0; i < tempWord.length; i++) {
       exists = tempWord.indexOf(tempGuess[i])
       if (exists > 0) {
@@ -129,7 +145,7 @@ function guess() {
     if (tempWord.join('').length == 0) {
       console.log('Winner!');
       winner = true;
-      
+
       // Recolor all remaining
       for (var i = guessCount; i < rowCount; i++) {
         for (var j = 0; j < tempWord.length; j++) {
