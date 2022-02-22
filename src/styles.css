@@ -37,7 +37,6 @@ body {
 
 body {
     font-family: sans-serif;
-    font-size: 1.3em;
     color: #ccc;
     background: #000;
 }
@@ -65,13 +64,14 @@ span {
     border: 1px solid #888;
     padding: 5px 5px;
     text-decoration: none; */
-    border-radius: 5px;
+    border-radius: 15px;
     font-size: 2em;
     cursor: default;
 }
 
 .title {
-    padding: 10px 10px;
+    padding: 20px 20px;
+    font-size: 5em;
 }
 
 table {
@@ -85,12 +85,12 @@ td {
     border: 1px solid #000;
     background-color: #222;
     text-decoration: none;
-    width: 50px;
-    height: 50px;
+    width: 120px;
+    height: 120px;
     padding: 5px 5px;
     margin-top: 10px;
-    border-radius: 5px;
-    font-size: 1.5em;
+    border-radius: 15px;
+    font-size: 5em;
 }
 
 /* Buttons */
@@ -100,11 +100,11 @@ td {
     padding: 5px 5px;
     margin-top: 10px;
     text-decoration: none;
-    font-size: 1.2em;
+    font-size: 3em;
     cursor: pointer;
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
+    width: 90px;
+    height: 90px;
+    border-radius: 15px;
 }
 
 .button-row {
@@ -150,4 +150,8 @@ td {
 .button-group .neutral:active {
     background-color: rgb(110, 110, 110);
     transform: translateY(4px);
+}
+
+.between-grey {
+    background-color: rgb(110, 110, 110);
 }

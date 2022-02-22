@@ -1,17 +1,17 @@
-const words = ['qw'];// ['aa', 'ab', 'ad', 'ae', 'ag', 'ah', 'ai', 'al', 'am', 'an', 'ar', 'as', 'at', 'aw', 'ax', 'ay', 'ba', 'be', 'bi', 'bo', 'by', 'da', 'de', 'do', 'ed', 'ef', 'eh', 'el', 'em', 'en', 'er', 'es', 'et', 'ex', 'fa', 'fe', 'gi', 'go', 'ha', 'he', 'hi', 'hm', 'ho', 'id', 'if', 'in', 'is', 'it', 'jo', 'ka', 'ki', 'la', 'li', 'lo', 'ma', 'me', 'mi', 'mm', 'mo', 'mu', 'my', 'na', 'ne', 'no', 'nu', 'od', 'oe', 'of', 'oh', 'oi', 'ok', 'om', 'on', 'op', 'or', 'os', 'ow', 'ox', 'oy', 'pa', 'pe', 'pi', 'po', 'qi', 're', 'sh', 'si', 'so', 'ta', 'te', 'ti', 'to', 'uh', 'um', 'un', 'up', 'us', 'ut', 'we', 'wo', 'xi', 'xu', 'ya', 'ye', 'yo', 'za'];
+const words = ['aa', 'ab', 'ad', 'ae', 'ag', 'ah', 'ai', 'al', 'am', 'an', 'ar', 'as', 'at', 'aw', 'ax', 'ay', 'ba', 'be', 'bi', 'bo', 'by', 'da', 'de', 'do', 'ed', 'ef', 'eh', 'el', 'em', 'en', 'er', 'es', 'et', 'ex', 'fa', 'fe', 'gi', 'go', 'ha', 'he', 'hi', 'hm', 'ho', 'id', 'if', 'in', 'is', 'it', 'jo', 'ka', 'ki', 'la', 'li', 'lo', 'ma', 'me', 'mi', 'mm', 'mo', 'mu', 'my', 'na', 'ne', 'no', 'nu', 'od', 'oe', 'of', 'oh', 'oi', 'ok', 'om', 'on', 'op', 'or', 'os', 'ow', 'ox', 'oy', 'pa', 'pe', 'pi', 'po', 'qi', 're', 'sh', 'si', 'so', 'ta', 'te', 'ti', 'to', 'uh', 'um', 'un', 'up', 'us', 'ut', 'we', 'wo', 'xi', 'xu', 'ya', 'ye', 'yo', 'za'];
 
+var debug = false;
+var winner = false;
 var word;
 var guessCount;
 var currentGuess;
 var grid;
 var rowCount;
-var winner = false;
 onInit();
 
 function onInit() {
   word = pickWord();
-  rowCount = 8;
-
+  rowCount = 10;
   guessCount = 0;
   currentGuess = [];
 
@@ -21,6 +21,9 @@ function onInit() {
 
   console.log(`Wow there's ${words.length} words in this set!`);
   console.log(`Don't tell anyone but the word is ${word}`);
+
+  if (!debug) console.debug = function () { };
+  styleRow(guessCount);
 }
 
 function pickWord() {
@@ -49,14 +52,20 @@ function swapLetter(value) {
   document.getElementById(`${guessCount}${currentGuess.length - 1}`).innerHTML = value;
 }
 
-function paintNext(add = true) {
+function styleRow(row) {
+  for (var i = 0; i < word.length; i++) {
+    (document.getElementById(`${row}${i}`).classList.add('between-grey'));
+  }
+}
+
+function styleCell(add = true) {
   if (add) {
-    document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.add('neutral');
+    document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.replace('between-grey', 'neutral');
   } else {
     if (currentGuess.length > 0) {
-      document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.add('neutral');
+      document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.replace('between-grey', 'neutral');
     }
-    document.getElementById(`${guessCount}${currentGuess.length}`).classList.remove('neutral');
+    document.getElementById(`${guessCount}${currentGuess.length}`).classList.replace('neutral', 'between-grey');
   }
 }
 
@@ -79,9 +88,9 @@ function letterPress(value) {
   if (currentGuess.length < word.length) {
     currentGuess.push(value);
     swapLetter(value);
-    paintNext();
+    styleCell();
   } else {
-    console.log('Too many letters!')
+    console.debug('Too many letters!')
   }
 }
 
@@ -89,7 +98,7 @@ function back() {
   if (!winner && currentGuess.length > 0) {
     swapLetter('');
     currentGuess.pop();
-    paintNext(false);
+    styleCell(false);
   }
 }
 
@@ -102,6 +111,8 @@ function guess() {
     // Find exact matches
     for (var i = 0; i < tempWord.length; i++) {
       if (tempWord[i] == tempGuess[i]) {
+        console.debug(`MATCH ${tempWord[i]} == ${tempGuess[i]}`);
+
         // Recolor guess cell
         if (document.getElementById(`${guessCount}${i}`).classList.contains('neutral')) {
           document.getElementById(`${guessCount}${i}`).classList.replace('neutral', 'matched');
@@ -110,6 +121,8 @@ function guess() {
         // Recolor key
         if (document.getElementById(`${tempGuess[i]}`).classList.contains('neutral')) {
           document.getElementById(`${tempGuess[i]}`).classList.replace('neutral', 'matched');
+        } else if (document.getElementById(`${tempGuess[i]}`).classList.contains('contains')) {
+          document.getElementById(`${tempGuess[i]}`).classList.replace('contains', 'matched');
         }
 
         tempGuess[i] = '';
@@ -119,12 +132,15 @@ function guess() {
 
     // Find containing letter matches
     for (var i = 0; i < tempWord.length; i++) {
+      if (tempGuess[i] == '') {
+        continue;
+      }
+
+      console.debug(`LETTER ${tempGuess[i]}`);
+
       exists = tempWord.indexOf(tempGuess[i])
-      if (exists > 0) {
-        console.log(i)
-        console.log(`Guess: ${tempGuess}`);
-        console.log(`Match: ${tempWord}`);
-        console.log(`Word: ${word}`);
+      if (exists != -1) {
+        console.debug(`EXISTS ${tempWord[exists]} at ${i}`);
 
         // Recolor guess cell
         if (document.getElementById(`${guessCount}${exists}`).classList.contains('neutral')) {
@@ -139,7 +155,6 @@ function guess() {
         tempGuess[i] = '';
       }
     }
-    guessCount++;
 
     // Determine if we've won
     if (tempWord.join('').length == 0) {
@@ -155,14 +170,17 @@ function guess() {
       }
 
     } else {
-      console.log(`Guess: ${tempGuess}`);
-      console.log(`Match: ${tempWord}`);
-      console.log(`Word: ${word}`);
+      console.debug(`Guess: ${tempGuess}`);
+      console.debug(`Match: ${tempWord}`);
+      console.debug(`Word: ${word}`);
 
+      // Empty out the guess and set next row style
       currentGuess = [];
+      guessCount++;
+      styleRow(guessCount);
     }
 
   } else {
-    console.log('Blocked');
+    console.debug('Blocked');
   }
 }
