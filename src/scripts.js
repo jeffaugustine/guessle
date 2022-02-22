@@ -104,82 +104,103 @@ function back() {
 
 function guess() {
   if (currentGuess.length == word.length) {
-    var tempGuess = [...currentGuess];
-    var tempWord = Array.from(word);
-    var exists = -1;
-
-    // Find exact matches
-    for (var i = 0; i < tempWord.length; i++) {
-      if (tempWord[i] == tempGuess[i]) {
-        console.debug(`MATCH ${tempWord[i]} == ${tempGuess[i]}`);
-
-        // Recolor guess cell
-        if (document.getElementById(`${guessCount}${i}`).classList.contains('neutral')) {
-          document.getElementById(`${guessCount}${i}`).classList.replace('neutral', 'matched');
-        }
-
-        // Recolor key
-        if (document.getElementById(`${tempGuess[i]}`).classList.contains('neutral')) {
-          document.getElementById(`${tempGuess[i]}`).classList.replace('neutral', 'matched');
-        } else if (document.getElementById(`${tempGuess[i]}`).classList.contains('contains')) {
-          document.getElementById(`${tempGuess[i]}`).classList.replace('contains', 'matched');
-        }
-
-        tempGuess[i] = '';
-        tempWord[i] = '';
-      }
-    }
-
-    // Find containing letter matches
-    for (var i = 0; i < tempWord.length; i++) {
-      if (tempGuess[i] == '') {
-        continue;
-      }
-
-      console.debug(`LETTER ${tempGuess[i]}`);
-
-      exists = tempWord.indexOf(tempGuess[i])
-      if (exists != -1) {
-        console.debug(`EXISTS ${tempWord[exists]} at ${i}`);
-
-        // Recolor guess cell
-        if (document.getElementById(`${guessCount}${exists}`).classList.contains('neutral')) {
-          document.getElementById(`${guessCount}${exists}`).classList.replace('neutral', 'contains');
-        }
-
-        // Recolor key
-        if (document.getElementById(`${tempWord[exists]}`).classList.contains('neutral')) {
-          document.getElementById(`${tempWord[exists]}`).classList.replace('neutral', 'contains');
-        }
-
-        tempGuess[i] = '';
-      }
-    }
-
-    // Determine if we've won
-    if (tempWord.join('').length == 0) {
-      console.log('Winner!');
-      winner = true;
-
-      // Recolor all remaining
-      for (var i = guessCount; i < rowCount; i++) {
-        for (var j = 0; j < tempWord.length; j++) {
-          document.getElementById(`${i}${j}`).classList.add('matched');
-          document.getElementById(`${i}${j}`).innerHTML = word[j];
-        }
-      }
-
+    if (!words.includes(currentGuess.toString().replace(',', '').toLowerCase())) {
+      window.alert(`${currentGuess.toString().replace(',', '')} isn't real!`);
     } else {
-      console.debug(`Guess: ${tempGuess}`);
-      console.debug(`Match: ${tempWord}`);
-      console.debug(`Word: ${word}`);
+      var tempGuess = [...currentGuess];
+      var tempWord = Array.from(word);
+      var exists = -1;
 
-      // Empty out the guess and set next row style
-      currentGuess = [];
-      guessCount++;
-      styleRow(guessCount);
+      // Find exact matches
+      for (var i = 0; i < tempWord.length; i++) {
+        if (tempWord[i] == tempGuess[i]) {
+          console.debug(`MATCH ${tempWord[i]} == ${tempGuess[i]}`);
+
+          // Recolor guess cell
+          if (document.getElementById(`${guessCount}${i}`).classList.contains('neutral')) {
+            document.getElementById(`${guessCount}${i}`).classList.replace('neutral', 'matched');
+          }
+
+          // Recolor key
+          if (document.getElementById(`${tempGuess[i]}`).classList.contains('neutral')) {
+            document.getElementById(`${tempGuess[i]}`).classList.replace('neutral', 'matched');
+          } else if (document.getElementById(`${tempGuess[i]}`).classList.contains('contains')) {
+            document.getElementById(`${tempGuess[i]}`).classList.replace('contains', 'matched');
+          }
+
+          tempGuess[i] = '';
+          tempWord[i] = '';
+        }
+      }
+
+      // Find containing letter matches
+      for (var i = 0; i < tempWord.length; i++) {
+        if (tempGuess[i] == '') {
+          continue;
+        }
+
+        console.debug(`LETTER ${tempGuess[i]}`);
+
+        exists = tempWord.indexOf(tempGuess[i])
+        if (exists != -1) {
+          console.debug(`EXISTS ${tempWord[exists]} at ${i}`);
+
+          // Recolor guess cell
+          if (document.getElementById(`${guessCount}${exists}`).classList.contains('neutral')) {
+            document.getElementById(`${guessCount}${exists}`).classList.replace('neutral', 'contains');
+          }
+
+          // Recolor key
+          if (document.getElementById(`${tempWord[exists]}`).classList.contains('neutral')) {
+            document.getElementById(`${tempWord[exists]}`).classList.replace('neutral', 'contains');
+          }
+
+          tempGuess[i] = '';
+        } else {
+          // Recolor key
+          if (document.getElementById(`${tempGuess[i]}`).classList.contains('neutral')) {
+            document.getElementById(`${tempGuess[i]}`).classList.replace('neutral', 'not-grey');
+          }
+        }
+      }
+
+      // Determine if we've won
+      if (tempWord.join('').length == 0) {
+
+        // Recolor all remaining
+        for (var i = guessCount; i < rowCount; i++) {
+          for (var j = 0; j < tempWord.length; j++) {
+            document.getElementById(`${i}${j}`).classList.add('matched');
+            document.getElementById(`${i}${j}`).innerHTML = word[j];
+          }
+        }
+
+        window.alert(`Winner! The word was ${word}`);
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+
+      } else {
+        console.debug(`Guess: ${tempGuess}`);
+        console.debug(`Match: ${tempWord}`);
+        console.debug(`Word: ${word}`);
+
+        // Empty out the guess and set next row style
+        currentGuess = [];
+        guessCount++;
+
+
+        if (rowCount == guessCount) {
+          window.alert(`Better luck next time! The word was ${word}`);
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        } else {
+          styleRow(guessCount);
+        }
+      }
+
     }
-
   } else {
     console.debug('Blocked');
   }
