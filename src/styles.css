@@ -155,3 +155,7 @@ td {
 .between-grey {
     background-color: rgb(110, 110, 110);
 }
+
+.not-grey {
+    background-color: #222;
+}
