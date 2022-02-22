@@ -146,8 +146,8 @@ function guess() {
           console.debug(`EXISTS ${tempWord[exists]} at ${i}`);
 
           // Recolor guess cell
-          if (document.getElementById(`${guessCount}${exists}`).classList.contains('neutral')) {
-            document.getElementById(`${guessCount}${exists}`).classList.replace('neutral', 'contains');
+          if (document.getElementById(`${guessCount}${i}`).classList.contains('neutral')) {
+            document.getElementById(`${guessCount}${i}`).classList.replace('neutral', 'contains');
           }
 
           // Recolor key
