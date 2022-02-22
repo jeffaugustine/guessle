@@ -11,7 +11,7 @@ onInit();
 
 function onInit() {
   word = pickWord();
-  rowCount = 10;
+  rowCount = 8;
   guessCount = 0;
   currentGuess = [];
 
