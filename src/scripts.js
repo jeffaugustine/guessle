@@ -41,14 +41,13 @@ async function getGameMode() {
   switch (window.location.search.substring(1)) {
     case 'threedle':
       title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('three-letter.json');
+      await getWords('three-letter.js');
       break;
     // case 'twodle':
-    //   console.log('use three')
     //   break;
     default:
       title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('two-letter.json');
+      await getWords('two-letter.js');
       break;
   }
 }
@@ -56,7 +55,7 @@ async function getGameMode() {
 async function getWords(fileName) {
   const xhr = new XMLHttpRequest(),
     method = "GET",
-    url = `/src/words/${fileName}`;
+    url = `/src/${fileName}`;
   xhr.open(method, url, true);
   xhr.send();
   await new Promise((resolve) => {
