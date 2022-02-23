@@ -55,7 +55,7 @@ async function getGameMode() {
 async function getWords(fileName) {
   const xhr = new XMLHttpRequest(),
     method = "GET",
-    url = `${window.location.href}words/${fileName}`;
+    url = `${location.pathname}words/${fileName}`;
   xhr.open(method, url, true);
   xhr.send();
   await new Promise((resolve) => {
