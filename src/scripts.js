@@ -7,9 +7,11 @@ var guessCount;
 var currentGuess;
 var grid;
 var rowCount;
+var snackTime = 5000;
 onInit();
 
 function onInit() {
+  getGameMode();
   word = pickWord();
   rowCount = 8;
   guessCount = 0;
@@ -17,13 +19,41 @@ function onInit() {
 
   grid = document.getElementById('grid');
   createGrid(word.length, rowCount);
+  styleRow(guessCount);
+
   document.addEventListener('keydown', keyPress);
 
   console.log(`Wow there's ${words.length} words in this set!`);
   console.log(`Don't tell anyone but the word is ${word}`);
 
-  if (!debug) console.debug = function () { };
-  styleRow(guessCount);
+  if (!debug) console.debug = () => { };
+
+}
+
+function snack(message) {
+  var bar = document.getElementById("snackbar");
+  bar.innerText = message;
+  bar.className = "show";
+  setTimeout(() => { bar.className = bar.className.replace("show", ""); }, snackTime); // timeout must match total css animation
+}
+
+function getGameMode() {
+  var title = document.getElementById("title");
+
+  switch (window.location.search.substring(1)) {
+    case 'threedle':
+      console.log('use three')
+      title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`
+      break;
+    // case 'twodle':
+    //   console.log('use three')
+    //   break;
+    default:
+      console.log('use 2')
+      title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`
+      break;
+  }
+
 }
 
 function pickWord() {
@@ -61,10 +91,8 @@ function styleRow(row) {
 function styleCell(add = true) {
   if (add) {
     document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.replace('between-grey', 'neutral');
+    document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.add('zoom-in-out');
   } else {
-    if (currentGuess.length > 0) {
-      document.getElementById(`${guessCount}${currentGuess.length - 1}`).classList.replace('between-grey', 'neutral');
-    }
     document.getElementById(`${guessCount}${currentGuess.length}`).classList.replace('neutral', 'between-grey');
   }
 }
@@ -105,7 +133,7 @@ function back() {
 function guess() {
   if (currentGuess.length == word.length) {
     if (!words.includes(currentGuess.toString().replace(',', '').toLowerCase())) {
-      window.alert(`${currentGuess.toString().replace(',', '')} isn't real!`);
+      snack(`${currentGuess.toString().replace(',', '')} isn't real!`);
     } else {
       var tempGuess = [...currentGuess];
       var tempWord = Array.from(word);
@@ -175,10 +203,10 @@ function guess() {
           }
         }
 
-        window.alert(`Winner! The word was ${word}`);
+        snack(`Winner! The word was ${word}`);
         setTimeout(() => {
           location.reload();
-        }, 2000);
+        }, snackTime + 2000);
 
       } else {
         console.debug(`Guess: ${tempGuess}`);
@@ -191,10 +219,10 @@ function guess() {
 
 
         if (rowCount == guessCount) {
-          window.alert(`Better luck next time! The word was ${word}`);
+          snack(`Better luck next time! The word was ${word}`);
           setTimeout(() => {
             location.reload();
-          }, 2000);
+          }, snackTime + 2000);
         } else {
           styleRow(guessCount);
         }
