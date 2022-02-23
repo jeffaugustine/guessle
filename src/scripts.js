@@ -1,5 +1,4 @@
-const words = ['aa', 'ab', 'ad', 'ae', 'ag', 'ah', 'ai', 'al', 'am', 'an', 'ar', 'as', 'at', 'aw', 'ax', 'ay', 'ba', 'be', 'bi', 'bo', 'by', 'da', 'de', 'do', 'ed', 'ef', 'eh', 'el', 'em', 'en', 'er', 'es', 'et', 'ex', 'fa', 'fe', 'gi', 'go', 'ha', 'he', 'hi', 'hm', 'ho', 'id', 'if', 'in', 'is', 'it', 'jo', 'ka', 'ki', 'la', 'li', 'lo', 'ma', 'me', 'mi', 'mm', 'mo', 'mu', 'my', 'na', 'ne', 'no', 'nu', 'od', 'oe', 'of', 'oh', 'oi', 'ok', 'om', 'on', 'op', 'or', 'os', 'ow', 'ox', 'oy', 'pa', 'pe', 'pi', 'po', 'qi', 're', 'sh', 'si', 'so', 'ta', 'te', 'ti', 'to', 'uh', 'um', 'un', 'up', 'us', 'ut', 'we', 'wo', 'xi', 'xu', 'ya', 'ye', 'yo', 'za'];
-
+var words;
 var debug = false;
 var winner = false;
 var word;
@@ -10,16 +9,16 @@ var rowCount;
 var snackTime = 5000;
 onInit();
 
-function onInit() {
-  getGameMode();
-  word = pickWord();
+async function onInit() {
   rowCount = 8;
   guessCount = 0;
   currentGuess = [];
-
-  grid = document.getElementById('grid');
-  createGrid(word.length, rowCount);
-  styleRow(guessCount);
+  await getGameMode().then(() => {
+    word = pickWord();
+    grid = document.getElementById('grid');
+    createGrid(word.length, rowCount);
+    styleRow(guessCount);
+  })
 
   document.addEventListener('keydown', keyPress);
 
@@ -27,7 +26,6 @@ function onInit() {
   console.log(`Don't tell anyone but the word is ${word}`);
 
   if (!debug) console.debug = () => { };
-
 }
 
 function snack(message) {
@@ -37,23 +35,42 @@ function snack(message) {
   setTimeout(() => { bar.className = bar.className.replace("show", ""); }, snackTime); // timeout must match total css animation
 }
 
-function getGameMode() {
+async function getGameMode() {
   var title = document.getElementById("title");
 
   switch (window.location.search.substring(1)) {
     case 'threedle':
-      console.log('use three')
-      title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`
+      title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
+      await getWords('three-letter.json');
       break;
     // case 'twodle':
     //   console.log('use three')
     //   break;
     default:
-      console.log('use 2')
-      title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`
+      title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
+      await getWords('two-letter.json');
       break;
   }
+}
 
+async function getWords(fileName) {
+  const xhr = new XMLHttpRequest(),
+    method = "GET",
+    url = `/src/words/${fileName}`;
+  xhr.open(method, url, true);
+  xhr.send();
+  await new Promise((resolve) => {
+    xhr.onreadystatechange = (e) => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        var status = xhr.status;
+        if (status === 0 || (status >= 200 && status < 400)) {
+          var response = xhr.responseText;
+          words = response.split('\n');
+          resolve();
+        }
+      }
+    }
+  });
 }
 
 function pickWord() {
@@ -132,8 +149,8 @@ function back() {
 
 function guess() {
   if (currentGuess.length == word.length) {
-    if (!words.includes(currentGuess.toString().replace(',', '').toLowerCase())) {
-      snack(`${currentGuess.toString().replace(',', '')} isn't real!`);
+    if (!words.includes(currentGuess.join('').toLowerCase())) {
+      snack(`${currentGuess.join('')} isn't real!`);
     } else {
       var tempGuess = [...currentGuess];
       var tempWord = Array.from(word);
