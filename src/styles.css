@@ -59,18 +59,14 @@
     }
 }
 
-/* Page Flex */
-html,
 body {
-    text-align: center;
-    height: 100%;
-    margin: 0;
-}
-
-body {
+    touch-action: pan-y;
     font-family: sans-serif;
     color: #ccc;
     background: #000;
+    text-align: center;
+    height: 100%;
+    margin: 0;
 }
 
 .split {
