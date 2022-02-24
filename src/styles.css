@@ -133,14 +133,28 @@ td {
 
 /* Buttons */
 .button-group .button {
+    cursor: pointer;
     color: lightgray;
     border: 1px solid #888;
     padding: 5px 5px;
     margin-top: 5px;
     text-decoration: none;
     font-size: 1em;
-    cursor: pointer;
     width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.button-wide {
+    cursor: pointer;
+    color: lightgray;
+    border: 1px solid #888;
+    padding: 5px 5px;
+    margin-top: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    width: 75px;
     height: 30px;
     border-radius: 5px;
     transition: 0.2s;
@@ -161,7 +175,7 @@ td {
 
 .button-group .matched:active {
     background-color: rgb(0, 180, 0);
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .contains {
@@ -170,12 +184,12 @@ td {
 
 .button-group .contains:hover {
     background-color: rgb(0, 101, 115);
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .button-group .contains:active {
     background-color: rgb(1, 150, 150);
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .neutral {
@@ -184,12 +198,12 @@ td {
 
 .button-group .neutral:hover {
     background-color: rgb(80, 80, 80);
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .button-group .neutral:active {
     background-color: rgb(110, 110, 110);
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .between-grey {
