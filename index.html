@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <html lang="en">
 
 <head>
     <link rel="icon" type="image/jpg" href="favicon.ico" />
-    <title>A Challenge!</title>
+    <title>Guessle the word</title>
     <link rel="stylesheet" href="./src/styles.css" media="screen">
 </head>
 
 <body>
     <script src="./src/scripts.js" defer></script>
 
+    <div id="help">
+        <h2>Welcome to GUESSLE</h2>
+        <p>(Scroll me)</p>
+        <hr>
+        <ul class="help-ul">
+            <li>Use the keys below, or just type away</li>
+            <li>Each guess must be a valid word</li>
+            <li>BACK if you want to change your word</li>
+            <li>GUESS when you're ready</li>
+        </ul>
+        <hr>
+        <h2>Example </h2>
+        <h1><span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span><span
+                class="matched">D</span><span class="matched">L</span><span class="matched">E</span></h1>
+        <ul class="help-ul">
+            <li>Green letters are a MATCH, the right letter in the right location</li>
+            <li>Blue letters are close, it's somewhere in the word</li>
+            <li>Grey isn't, and will darken in the keyboard to help you remember</li>
+        </ul>
+        <hr>
+        <p>(Try <a href="?mode=threedle">Three-dle</a> if you need more challenge)</p>
+        <h2 onclick="helpMessageToggle();">Press a letter below to get started!<br> ... or here</h2>
+    </div>
+
     <div class="split top">
         <div id="title" class="title"></div>
-        <div id="options" class="options">Green's a MATCH<br>Blue's close<br>Grey isn't<br>Try <a href="?threedle">Three-dle</a></div>
+        <div id="options" class="options">
+            <div onclick="helpMessageToggle();">Help!</div>
+            <div><a href="?mode=twodle">Two-dle</a></div>
+            <div><a href="?mode=threedle">Three-dle</a></div>
+        </div>
         <div id="snackbar">Whoops this shouldn't be here.</div>
         <div class="fade fade1" id="grid"></div>
     </div>
@@ -43,7 +71,7 @@
                 <button class="button neutral" onclick="letterPress(this.id)" id="L">L</button>
             </div>
             <div class="button-row">
-                <button class="button-wide neutral" onclick="guess()">GUESS</button>
+                <button class="button-wide neutral" onclick="guess();">GUESS</button>
 
                 <button class="button neutral" onclick="letterPress(this.id)" id="Z">Z</button>
                 <button class="button neutral" onclick="letterPress(this.id)" id="X">X</button>
@@ -53,7 +81,7 @@
                 <button class="button neutral" onclick="letterPress(this.id)" id="N">N</button>
                 <button class="button neutral" onclick="letterPress(this.id)" id="M">M</button>
 
-                <button class="button-wide neutral" onclick="back()">BACK</button>
+                <button class="button-wide neutral" onclick="back();">BACK</button>
             </div>
         </div>
     </div>

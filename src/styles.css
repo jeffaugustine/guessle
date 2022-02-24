@@ -107,8 +107,10 @@ span {
 .options {
     position: fixed;
     top: 0%;
-    font-size: 1.2em;
+    font-size: 1.5em;
     text-align: left;
+    color: rgb(0, 131, 150);
+    cursor: help;
 }
 
 table {
@@ -129,6 +131,10 @@ td {
     border-radius: 8px;
     font-size: 2em;
     cursor: default;
+}
+
+a {
+    color: rgb(0, 131, 150)
 }
 
 /* Buttons */
@@ -236,6 +242,29 @@ td {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
     animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+
+#help {
+    visibility: visible;
+    background-color: #333;
+    z-index: 5;
+    position: relative;
+    top: 20%;
+    width: 60%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 1em;
+    overflow-y: auto;
+}
+
+#help.hide {
+    visibility: hidden;
+}
+
+.help-ul {
+    text-align: left;
 }
 
 @-webkit-keyframes fadein {
