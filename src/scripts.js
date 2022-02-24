@@ -20,7 +20,7 @@ async function onInit() {
     styleRow(guessCount);
   })
 
-  document.addEventListener('keydown', keyPress);
+  document.addEventListener('keypress', keyPress);
 
   console.log(`Wow there's ${words.length} words in this set!`);
   console.log(`Don't tell anyone but the word is ${word}`);
