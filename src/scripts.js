@@ -6,21 +6,26 @@ var guessCount;
 var currentGuess;
 var grid;
 var rowCount;
-var snackTime = 5000;
+var snackTime;
+var helpVisible;
 onInit();
 
 async function onInit() {
+  snackTime = 5000;
   rowCount = 8;
   guessCount = 0;
   currentGuess = [];
+  helpVisible = false;
+  helpMessageToggle();
+
   await getGameMode().then(() => {
     word = pickWord();
     grid = document.getElementById('grid');
     createGrid(word.length, rowCount);
     styleRow(guessCount);
-  })
+  });
 
-  document.addEventListener('keydown', keyPress);
+  document.addEventListener('keypress', keyPress);
 
   console.log(`Wow there's ${words.length} words in this set!`);
   console.log(`Don't tell anyone but the word is ${word}`);
@@ -29,32 +34,47 @@ async function onInit() {
 }
 
 function snack(message) {
-  var bar = document.getElementById("snackbar");
+  var bar = document.getElementById('snackbar');
   bar.innerText = message;
-  bar.className = "show";
-  setTimeout(() => { bar.className = bar.className.replace("show", ""); }, snackTime); // timeout must match total css animation
+  bar.classList.add('show');
+  setTimeout(() => { bar.className = bar.classList.remove('show'); }, snackTime); // timeout must match total css animation
+}
+
+function helpMessageToggle() {
+  helpVisible = !helpVisible;
+
+  var help = document.getElementById('help');
+  if (helpVisible) {
+    help.classList.remove('hide');
+    sessionStorage.setItem('helpVisible', 'true');
+  } else {
+    help.classList.add('hide');
+    sessionStorage.setItem('helpVisible', 'false');
+  }
 }
 
 async function getGameMode() {
-  var title = document.getElementById("title");
+  var params = new URLSearchParams(window.location.search);
 
-  switch (window.location.search.substring(1)) {
+  var title = document.getElementById('title');
+
+  switch (params.get('mode')) {
     case 'threedle':
       title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('three-letter.js');
+      await getWords('three-letter.csv');
       break;
     // case 'twodle':
     //   break;
     default:
       title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('two-letter.js');
+      await getWords('two-letter.csv');
       break;
   }
 }
 
 async function getWords(fileName) {
   const xhr = new XMLHttpRequest(),
-    method = "GET",
+    method = 'GET',
     url = `${location.pathname}words/${fileName}`;
   xhr.open(method, url, true);
   xhr.send();
@@ -129,6 +149,10 @@ function keyPress(value) {
 
 // Buttons on page
 function letterPress(value) {
+  if (helpVisible) {
+    helpMessageToggle();
+  }
+
   if (currentGuess.length < word.length) {
     currentGuess.push(value);
     swapLetter(value);
@@ -149,7 +173,7 @@ function back() {
 function guess() {
   if (currentGuess.length == word.length) {
     if (!words.includes(currentGuess.join('').toLowerCase())) {
-      snack(`${currentGuess.join('')} isn't real!`);
+      snack(`${currentGuess.join('')} isn't a word!`);
     } else {
       var tempGuess = [...currentGuess];
       var tempWord = Array.from(word);
