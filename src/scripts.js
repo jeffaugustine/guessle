@@ -41,13 +41,13 @@ async function getGameMode() {
   switch (window.location.search.substring(1)) {
     case 'threedle':
       title.innerHTML = `<span class="neutral">T</span><span class="contains">H</span><span class="matched">R</span><span class="contains">E</span><span class="neutral">E</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('three-letter.js');
+      await getWords('three-letter.csv');
       break;
     // case 'twodle':
     //   break;
     default:
       title.innerHTML = `<span class="neutral">T</span><span class="contains">W</span><span class="contains">O</span>-<span class="matched">D</span><span class="matched">L</span><span class="matched">E</span>`;
-      await getWords('two-letter.js');
+      await getWords('two-letter.csv');
       break;
   }
 }
